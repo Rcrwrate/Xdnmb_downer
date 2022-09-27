@@ -46,16 +46,18 @@ class Epub():
         for i in url:
             try:
                 r = self.s.get(i)
+                if r.status_code == 200:
+                    with open(f'''.tmp/{self.name}/OEBPS/Images/{i.split("/")[-1]}''',"wb") as f:
+                        f.write(r.content)
+                    self.pics.append(i)
+                    fin.append(i)
             except:
                 print(f"[ERR]:\t{i}\t下载失败,是否将文件正常加入EPUB图片清单和插入章节Y/N")
                 inputs = input('>')
                 if inputs == "Y":
                     print(f'''[TIPS]:您需要手动下载该文件置于.tmp/{self.name}/OEBPS/Images/{i.split("/")[-1]}''')
-            if r.status_code == 200:
-                with open(f'''.tmp/{self.name}/OEBPS/Images/{i.split("/")[-1]}''',"wb") as f:
-                    f.write(r.content)
-                self.pics.append(i)
-                fin.append(i)
+                    self.pics.append(i)
+                    fin.append(i)
         return fin
 
     def cover(self, text):
@@ -82,7 +84,7 @@ class Epub():
             for i in o:
                 if i != "":
                     f.write(f"<p>　　{i}</p>\n")
-            f.write("</head>\n<body>\n")
+            f.write("</body>\n</html>\n")
         self.list.append({
             "id": "cover",
             "url": "Text/cover.xhtml",
@@ -150,6 +152,7 @@ class Epub():
 <dc:creator opf:role="aut">{self.url}</dc:creator>
 <dc:language>zh-CN</dc:language>
 <dc:publisher></dc:publisher>
+<meta name="cover" content="cover.jpg"/>
 </metadata>
 <manifest>
 <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml" />
@@ -157,7 +160,7 @@ class Epub():
 ''')
             for i in self.list:
                 f.write(
-                    f'''<item href="{i["url"]}" id="{i["url"]}" media-type="application/xhtml+xml" />\n''')
+                    f'''<item href="{i["url"]}" id="{i["url"].replace("Text/", "")}" media-type="application/xhtml+xml" />\n''')
             for i in self.pics:
                 f.write(
                     f'''<item href="Images/{i.split("/")[-1]}" id="{i.split("/")[-1]}" media-type="image/jpeg" />\n''')
@@ -182,8 +185,9 @@ class TXT():
 if __name__ == '__main__':
     e = Epub("test", "adw")
     e.cover("ABABA")
-    e.add_text("aaa", "wuti", [
-               "https://image.nmb.best/image/2022-09-13/6320726e73bd9.jpg"])
     n = Network({})
     e.plugin(n)
+    e.add_text("aaa", "wuti", [
+               "https://image.nmb.best/image/2022-09-13/6320726e73bd9.jpg"])
+    
     e.finish()
