@@ -44,7 +44,13 @@ class Epub():
     def download(self,url:list):
         fin = []
         for i in url:
-            r = self.s.get(i)
+            try:
+                r = self.s.get(i)
+            except:
+                print(f"[ERR]:\t{i}\t下载失败,是否将文件正常加入EPUB图片清单和插入章节Y/N")
+                inputs = input('>')
+                if inputs == "Y":
+                    print(f'''[TIPS]:您需要手动下载该文件置于.tmp/{self.name}/OEBPS/Images/{i.split("/")[-1]}''')
             if r.status_code == 200:
                 with open(f'''.tmp/{self.name}/OEBPS/Images/{i.split("/")[-1]}''',"wb") as f:
                     f.write(r.content)
