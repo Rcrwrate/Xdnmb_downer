@@ -152,12 +152,12 @@ class Epub():
 <dc:creator opf:role="aut">{self.url}</dc:creator>
 <dc:language>zh-CN</dc:language>
 <dc:publisher></dc:publisher>
-<meta name="cover" content="cover.jpg"/>
 </metadata>
 <manifest>
 <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml" />
 <item href="Images/cover.jpg" id="cover.jpg" media-type="image/jpeg" />
 ''')
+#可以在此处</metadata>之前加入<meta name="cover" content="cover.jpg"/>,加入后QQ的epub插件会出现异常，移除后正常，但封面章节内的文字依旧不显示
             for i in self.list:
                 f.write(
                     f'''<item href="{i["url"]}" id="{i["url"].replace("Text/", "")}" media-type="application/xhtml+xml" />\n''')
