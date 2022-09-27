@@ -1,5 +1,3 @@
-from Epub import TXT
-from Epub import Epub
 from Network import Network
 import logging
 
