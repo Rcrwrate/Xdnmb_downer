@@ -49,14 +49,8 @@ class Epub():
                 with open(f'''.tmp/{self.name}/OEBPS/Images/{i.split("/")[-1]}''',"wb") as f:
                     f.write(r.content)
                 self.pics.append(i)
-            else:
-                i = i.replace(".jpg",".png")
-                r = self.s.get(i)
-                if r.status_code == 200:
-                    with open(f'''.tmp/{self.name}/OEBPS/Images/{i.split("/")[-1]}''',"wb") as f:
-                        f.write(r.content)
-                    self.pics.append(i)
-        return url
+                fin.append(i)
+        return fin
 
     def cover(self, text):
         with open(f".tmp/{self.name}/OEBPS/Text/cover.xhtml", "w", encoding="utf-8") as f:

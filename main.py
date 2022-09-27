@@ -15,7 +15,7 @@ msg = fin["Replies"]
 e.add_text(f"来自https://www.nmbxd1.com/t/{DID}\n版权归属原作者及X岛匿名版","来源声明")
 for i in msg:
     if i["img"] != "":
-        e.add_text(i["content"],i["title"],["https://image.nmb.best/image/"+i["img"]+".jpg"])
+        e.add_text(i["content"],i["title"],["https://image.nmb.best/image/"+i["img"]+i["ext"]])
     else:
         e.add_text(i["content"],i["title"])
 e.finish()

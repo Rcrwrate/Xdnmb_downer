@@ -17,13 +17,17 @@ class Xdnmb():
         return r.json()
     
     def get_all(self,id):
-        p = 1
-        r = self.po(id,p)
-        fin = r
-        while len(r["Replies"]) != 0:
-            p += 1
+        try:
+            p = 1
             r = self.po(id,p)
-            fin["Replies"] += r["Replies"]
+            fin = r
+            while len(r["Replies"]) != 0:
+                p += 1
+                r = self.po(id,p)
+                fin["Replies"] += r["Replies"]
+        except Exception as e:
+            self.err = fin
+            raise Exception(e.args)
         return fin
     
     
