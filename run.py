@@ -71,9 +71,8 @@ def out(fin, x):
 
 
 def analysis(fin: dict):
-    print(len(fin["Replies"]))
     i = 0
-    while i <= len(fin["Replies"]):
+    while i < len(fin["Replies"]):
         if len(fin["Replies"][i]["content"]) <= 25 and fin["Replies"][i]["img"] == "":
             print(
                 f'''[ANALYSIS]:\t侦测到过短内容,请手动审核,从最终结果删除为d,其他为通过,以下为具体内容\n\t\t{fin["Replies"][i]["content"]}''')
@@ -82,7 +81,6 @@ def analysis(fin: dict):
                 del fin["Replies"][i]
         i += 1
     print("[ANALYSIS]:\t优化完成")
-    print(len(fin["Replies"]))
     return fin
 
 
