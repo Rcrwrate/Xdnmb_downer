@@ -62,7 +62,8 @@ def out(fin, x):
             e.add_text(i["content"], i["title"])
     e.finish()
     t = TXT(fin["title"])
-    t.add(f'''来自https://www.nmbxd1.com/t/{fin["id"]}\n版权归属原作者及X岛匿名版\n请勿用于违法用途，仅供学习交流使用，请在24小时内删除\n本文档由https://github.com/Rcrwrate/Xdnmb_downer生成''')
+    t.add(
+        f'''来自https://www.nmbxd1.com/t/{fin["id"]}\n版权归属原作者及X岛匿名版\n请勿用于违法用途，仅供学习交流使用，请在24小时内删除\n本文档由https://github.com/Rcrwrate/Xdnmb_downer生成''')
     t.add(fin["content"])
     for i in fin["Replies"]:
         t.add(i["content"])
@@ -102,7 +103,7 @@ i <id> | id <id> \t\t\t\t--- 下载某个串，并启用优化选项
             if inputs[0].startswith('q'):
                 import sys
                 sys.exit()
-            elif inputs[0].startswith('s'):
+            elif inputs[0].startswith('c'):
                 cookies(inputs)
             elif inputs[0].startswith('d'):
                 if cookie:
@@ -143,19 +144,14 @@ i <id> | id <id> \t\t\t\t--- 下载某个串，并启用优化选项
                             fin = x.err
                         cache(fin)
                         fin = analysis(fin)
+                        print(
+                            f'''[TIPS]:当前标题为{fin["title"]},是否需要修改,如需修改请直接键入修改后的标题,不需请按回车''')
+                        inputs = re.split('\\s+', input('>').strip())[0]
+                        if inputs != "":
+                            fin["title"] = inputs
                         out(fin, x)
                 else:
                     print("[ERR]:\t请先设置cookie")
-            elif inputs[0].startswith('d'):
-                print(cookie)
-            elif inputs[0].startswith('u'):
-                pass
-            elif inputs[0].startswith('t'):
-                pass
-            elif inputs[0].startswith('m'):
-                pass
-            elif inputs[0].startswith('version'):
-                pass
             else:
                 print(msg)
             inputs = re.split('\\s+', get('>').strip())
