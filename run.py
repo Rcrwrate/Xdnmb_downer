@@ -32,7 +32,6 @@ def cache(cache={}):
     import json
     if cache == {}:
         try:
-
             with open(".log/cache.json", "r", encoding="utf-8") as f:
                 c = json.load(f)
             return c
@@ -112,7 +111,7 @@ i <id> | id <id> \t\t\t\t--- 下载某个串，并启用优化选项
                     else:
                         x = Xdnmb(cookie)
                         try:
-                            fin = x.get_all(inputs[1])
+                            fin = x.get_with_cache(inputs[1])
                         except Exception as e:
                             print(f"[ERROR]:\t{e.args}")
                             fin = x.err
@@ -138,7 +137,7 @@ i <id> | id <id> \t\t\t\t--- 下载某个串，并启用优化选项
                     else:
                         x = Xdnmb(cookie)
                         try:
-                            fin = x.get_all(inputs[1])
+                            fin = x.get_with_cache(inputs[1])
                         except Exception as e:
                             print(f"[ERROR]:\t{e.args}")
                             fin = x.err
