@@ -11,12 +11,12 @@ class Xdnmb():
     def po(self, id, page):
         url = f"https://api.nmb.best/Api/po/id/{id}/page/{page}"
         r = self.s.get(url)
-        return r.json()
+        return self.remove_tips(r.json())
 
     def defalut(self, id, page):
         url = f"https://api.nmb.best/Api/thread/id/{id}/page/{page}"
         r = self.s.get(url)
-        return r.json()
+        return self.remove_tips(r.json())
 
     # def get_all(self, id):
     #     try:
@@ -59,10 +59,20 @@ class Xdnmb():
     @staticmethod
     def transform(fin):
         f = fin[0]
-        f["Replies"] = []
-        for i in fin:
-            f["Replies"] += i["Replies"]
+        i = 1
+        while i < len(fin):
+            f["Replies"] += fin[i]["Replies"]
+            i += 1
         return f
+
+    @staticmethod
+    def remove_tips(fin):
+        i = 0
+        while i < len(fin["Replies"]):
+            if fin["Replies"][i]["id"] == 9999999:
+                del fin["Replies"][i]
+            i += 1
+        return fin
 
     @staticmethod
     def cache(id, fin={}):
