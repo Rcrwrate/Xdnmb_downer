@@ -125,7 +125,7 @@ i <id> | id <id> \t\t\t\t--- 下载某个串，并启用优化选项
                 if c:
                     fin = analysis(c)
                     print(
-                        f'''[TIPS]:当前标题为{fin["title"]},是否需要修改,如需修改请直接键入修改后的标题,不需请按回车''')
+                        f'''[TIPS]:当前标题为"{fin["title"]}",是否需要修改,如需修改请直接键入修改后的标题,不需请按回车''')
                     inputs = re.split('\\s+', input('>').strip())[0]
                     if inputs != "":
                         fin["title"] = inputs
@@ -145,7 +145,7 @@ i <id> | id <id> \t\t\t\t--- 下载某个串，并启用优化选项
                         cache(fin)
                         fin = analysis(fin)
                         print(
-                            f'''[TIPS]:当前标题为{fin["title"]},是否需要修改,如需修改请直接键入修改后的标题,不需请按回车''')
+                            f'''[TIPS]:当前标题为"{fin["title"]}",是否需要修改,如需修改请直接键入修改后的标题,不需请按回车''')
                         inputs = re.split('\\s+', input('>').strip())[0]
                         if inputs != "":
                             fin["title"] = inputs
