@@ -4,7 +4,7 @@ from Epub import TXT
 
 x = Xdnmb(r"PHPSESSID=*****; userhash=*****")
 DID = 51340998
-fin = x.get_all(DID)
+fin = x.get_with_cache(DID)
 fin["title"] = "魔王勇者二三事"#作品标题,这里是原文标题不合适所以进行修改
 
 e = Epub(fin["title"],f"https://www.nmbxd1.com/t/{DID}")
