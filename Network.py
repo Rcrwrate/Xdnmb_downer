@@ -56,8 +56,8 @@ class Network():
         self.s.keep_alive = False
         self.table = hostTips
 
-    def get(self, url, header=False, noDefaultHeader=False, changeDefaultHeader=False, verify=False, **kwargs):
-        h = Header.headerchange(header, noDefaultHeader, changeDefaultHeader)
+    def get(self, url, headers=False, noDefaultHeader=False, changeDefaultHeader=False, verify=False, **kwargs):
+        h = Header.headerchange(headers, noDefaultHeader, changeDefaultHeader)
         domain = url.split("/")[2]
         conf = get_qs(self.table, domain)
         if conf != False:
