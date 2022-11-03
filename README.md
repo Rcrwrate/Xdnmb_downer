@@ -25,7 +25,9 @@ X岛匿名版的下载工具
 
 俩种方式
 1. 全选如下内容，直接拖到书签栏
+
 `javascript:(function(){let domain=document.domain;let cookie=document.cookie;prompt('Cookies: '+domain, cookie)})();`
+
 2. 打开匿名版，点击书签，直接复制框内内容填入程序`c + [你刚刚复制的内容]`
 
 或者
