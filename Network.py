@@ -103,12 +103,3 @@ class Header():
         for i in d1:
             d[i] = d1[i]
         return d
-
-
-if __name__ == "__main__":
-    # n = Network({"api.nmb.best": {"ip": "102.140.90.42"}},
-    #             log_level=logging.DEBUG)
-    # n.get("https://api.nmb.best/Api/thread/id/50001080/page/1",
-    #       header={"cookie": r"PHPSESSID=on8trsv1fq4fqq3v9he8qj5p1g; userhash=%C7%83F%0F%9D%16%F1%A9%CF%89%7B%5Ca%ACIPG%7E%20%BFTm%D6z"})
-    c = Cache()
-    c.md5(6)

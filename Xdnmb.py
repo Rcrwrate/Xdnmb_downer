@@ -5,7 +5,7 @@ import logging
 class Xdnmb():
     def __init__(self, cookie) -> None:
         self.s = Network(
-            {"api.nmb.best": {"ip": "102.140.90.42"}}, log_level=logging.INFO)
+            {"api.nmb.best": {"ip": False}}, log_level=logging.INFO)
         self.s.changeHeader({"cookie": cookie})
 
     def po(self, id, page):
