@@ -21,7 +21,7 @@ def cookies(inputs=[]):
             return False
     else:
         if len(inputs) < 3:
-            print("[ERR]:\t请按照如下进行输入\n>s PHPSESSID=*****; userhash=*****")
+            print("[ERR]:\t请按照如下进行输入\n>c PHPSESSID=*****; userhash=*****")
         else:
             with open(".log/cookies", "w", encoding="utf-8") as f:
                 f.write(f"{inputs[1]} {inputs[2]}")
