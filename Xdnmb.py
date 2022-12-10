@@ -39,13 +39,13 @@ class Xdnmb():
     #         raise Exception(e.args)
     #     return fin
 
-    def get_all(self, id, p=1, fin=[]):
+    def get_all(self, id, handle, p=1, fin=[]):
         try:
-            r = self.po(id, p)
+            r = handle(id, p)
             fin.append(r)
             p += 1
             while len(r["Replies"]) != 0:
-                r = self.po(id, p)
+                r = handle(id, p)
                 fin.append(r)
                 p += 1
         except Exception as e:
@@ -53,14 +53,14 @@ class Xdnmb():
             raise Exception(e.args)
         return fin
 
-    def get_with_cache(self, id):
-        c = self.cache(id)
+    def get_with_cache(self, id, handle):
+        c = self.cache(f"{id}_{handle.__name__}")
         if c:
-            fin = self.get_all(id, p=len(c)+1, fin=c)
+            fin = self.get_all(id, handle, p=len(c)+1, fin=c)
             return self.transform(fin)
         else:
-            fin = self.get_all(id)
-            self.cache(id, fin[:-2])
+            fin = self.get_all(id, handle)
+            self.cache(f"{id}_{handle.__name__}", fin[:-2])
             return self.transform(fin)
 
     @staticmethod

@@ -113,7 +113,7 @@ def main():
                     else:
                         x = Xdnmb(cookie)
                         try:
-                            fin = x.get_with_cache(inputs[1])
+                            fin = x.get_with_cache(inputs[1], x.po)
                         except Exception as e:
                             print(f"[ERROR]:\t{e.args}")
                             fin = x.err
@@ -139,7 +139,7 @@ def main():
                     else:
                         x = Xdnmb(cookie)
                         try:
-                            fin = x.get_with_cache(inputs[1])
+                            fin = x.get_with_cache(inputs[1], x.po)
                         except Exception as e:
                             print(f"[ERROR]:\t{e.args}")
                             fin = x.err
