@@ -1,5 +1,5 @@
 import os
-from Network import Network
+from Lib.Network import Network
 
 
 def mkdir(path):

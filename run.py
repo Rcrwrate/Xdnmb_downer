@@ -1,4 +1,5 @@
 import re
+import os
 from Xdnmb import Xdnmb
 
 
@@ -15,7 +16,7 @@ def cookies(inputs=[]):
     if inputs == []:
         global cookie
         try:
-            with open(".log/cookies", "r", encoding="utf-8") as f:
+            with open(os.path.join(".log", "cookies"), "r", encoding="utf-8") as f:
                 return f.readlines()[0]
         except:
             return False
@@ -23,7 +24,7 @@ def cookies(inputs=[]):
         if len(inputs) < 3:
             print("[ERR]:\t请按照如下进行输入\n>c PHPSESSID=*****; userhash=*****")
         else:
-            with open(".log/cookies", "w", encoding="utf-8") as f:
+            with open(os.path.join(".log", "cookies"), "w", encoding="utf-8") as f:
                 f.write(f"{inputs[1]} {inputs[2]}")
                 cookie = f"{inputs[1]} {inputs[2]}"
 
@@ -32,14 +33,14 @@ def cache(cache={}):
     import json
     if cache == {}:
         try:
-            with open(".log/cache.json", "r", encoding="utf-8") as f:
+            with open(os.path.join(".log", "cache.json"), "r", encoding="utf-8") as f:
                 c = json.load(f)
             return c
         except:
             print("[ERR]:\t缓存不存在或缓存失效")
             return False
     else:
-        with open(".log/cache.json", "w", encoding="utf-8") as f:
+        with open(os.path.join(".log", "cache.json"), "w", encoding="utf-8") as f:
             json.dump(cache, f)
 
 

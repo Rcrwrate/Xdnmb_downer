@@ -1,11 +1,11 @@
-from Network import Network
-import logging
+from Lib.Network import Network
+import os
+import json
 
 
 class Xdnmb():
     def __init__(self, cookie) -> None:
-        self.s = Network(
-            {"api.nmb.best": {"ip": False}}, log_level=logging.INFO)
+        self.s = Network()
         self.s.changeHeader({"cookie": cookie})
 
     def po(self, id, page):
@@ -76,15 +76,15 @@ class Xdnmb():
 
     @staticmethod
     def cache(id, fin={}):
-        import json
+        path = os.path.join(".log", f"{id}.json")
         if fin == {}:
             try:
-                with open(f".log/{id}.json", "r", encoding="utf-8") as f:
+                with open(path, "r", encoding="utf-8") as f:
                     c = json.load(f)
                 return c
             except:
                 print("[INFO]:未检测到缓存")
                 return False
         else:
-            with open(f".log/{id}.json", "w", encoding="utf-8") as f:
+            with open(path, "w", encoding="utf-8") as f:
                 json.dump(fin, f)
