@@ -39,6 +39,12 @@ class Xdnmb():
     #         raise Exception(e.args)
     #     return fin
 
+    def get_by_id(self, id):
+        url = f"https://api.nmb.best/Api/ref/id/{id}"
+        r = self.s.get(url)
+        self.success(r.json())
+        return r.json()
+
     def get_all(self, id, handle, p=1, fin=[]):
         try:
             r = handle(id, p)
