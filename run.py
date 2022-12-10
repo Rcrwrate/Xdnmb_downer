@@ -159,7 +159,7 @@ def main():
     except XdnmbException as err:
         print("[ERR]:" + err.args[0])
         main()
-    except Exception as err:
+    except Exception:
         import traceback
         print(traceback.format_exc())
 

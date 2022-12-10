@@ -75,7 +75,7 @@ class Xdnmb():
             elif r["error"] == "必须登入领取饼干后才可以访问":
                 raise XdnmbException("饼干呢?你这饼干假的吧,必须登入领取饼干后才可以访问,再给你一次机会")
             else:
-                raise XdnmbException(r["error"])
+                raise XdnmbException("很神秘,是不知道的错误呢:"+r["error"])
 
     @staticmethod
     def transform(fin):
