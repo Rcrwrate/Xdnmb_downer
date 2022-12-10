@@ -3,19 +3,26 @@ import os
 import json
 
 
+class XdnmbException(BaseException):
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+
+
 class Xdnmb():
-    def __init__(self, cookie) -> None:
-        self.s = Network()
+    def __init__(self, cookie, s: Network = Network({})) -> None:
+        self.s = s
         self.s.changeHeader({"cookie": cookie})
 
     def po(self, id, page):
         url = f"https://api.nmb.best/Api/po/id/{id}/page/{page}"
         r = self.s.get(url)
+        self.success(r.json())
         return self.remove_tips(r.json())
 
     def defalut(self, id, page):
         url = f"https://api.nmb.best/Api/thread/id/{id}/page/{page}"
         r = self.s.get(url)
+        self.success(r.json())
         return self.remove_tips(r.json())
 
     # def get_all(self, id):
@@ -55,6 +62,20 @@ class Xdnmb():
             fin = self.get_all(id)
             self.cache(id, fin[:-2])
             return self.transform(fin)
+
+    @staticmethod
+    def success(r):
+        try:
+            r["success"] == False
+        except Exception:
+            return r
+        else:
+            if r["error"] == "该串不存在":
+                raise XdnmbException("虚空下载不可取,该串不存在,再给你一次机会")
+            elif r["error"] == "必须登入领取饼干后才可以访问":
+                raise XdnmbException("饼干呢?你这饼干假的吧,必须登入领取饼干后才可以访问,再给你一次机会")
+            else:
+                raise XdnmbException(r["error"])
 
     @staticmethod
     def transform(fin):

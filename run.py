@@ -1,6 +1,6 @@
 import re
 import os
-from Xdnmb import Xdnmb
+from Xdnmb import Xdnmb, XdnmbException
 
 
 def get(prompt, default=None):
@@ -14,7 +14,6 @@ def get(prompt, default=None):
 
 def cookies(inputs=[]):
     if inputs == []:
-        global cookie
         try:
             with open(os.path.join(".log", "cookies"), "r", encoding="utf-8") as f:
                 return f.readlines()[0]
@@ -26,7 +25,7 @@ def cookies(inputs=[]):
         else:
             with open(os.path.join(".log", "cookies"), "w", encoding="utf-8") as f:
                 f.write(f"{inputs[1]} {inputs[2]}")
-                cookie = f"{inputs[1]} {inputs[2]}"
+            return f"{inputs[1]} {inputs[2]}"
 
 
 def cache(cache={}):
@@ -85,10 +84,7 @@ def analysis(fin: dict):
     return fin
 
 
-def main():
-    try:
-        cookie = cookies()
-        msg = '''
+msg = '''
 指令(指令输入字首即可):
 h | help\t\t\t\t\t--- 显示说明 (显示此讯息)
 r | read cache\t\t\t\t\t--- 读取上次缓存文件，并启用优化选项
@@ -97,7 +93,12 @@ c <cookie> | cookie <cookie> \t\t\t--- 设置cookie
 d <id> | download <id> \t\t\t\t--- 下载某个串，中间无视其他优化选项
 i <id> | id <id> \t\t\t\t--- 下载某个串，并启用优化选项
 '''
-        print(msg)
+print(msg)
+
+
+def main():
+    try:
+        cookie = cookies()
         inputs = re.split('\\s+', get('>').strip())
         while True:
             if inputs[0].startswith('q'):
@@ -155,8 +156,12 @@ i <id> | id <id> \t\t\t\t--- 下载某个串，并启用优化选项
             else:
                 print(msg)
             inputs = re.split('\\s+', get('>').strip())
+    except XdnmbException as err:
+        print("[ERR]:" + err.args[0])
+        main()
     except Exception as err:
-        print(err.args)
+        import traceback
+        print(traceback.format_exc())
 
 
 if __name__ == "__main__":
