@@ -92,6 +92,7 @@ def main(args):
             fin["title"] = args.title
 
     out(fin, x=x)
+    sys.exit(0)
 
 
 main(args)
