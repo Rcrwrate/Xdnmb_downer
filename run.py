@@ -1,6 +1,9 @@
 import re
 import os
 from Xdnmb import Xdnmb, XdnmbException
+from Lib.ini import CONF
+
+conf = CONF("Xdnmb")
 
 
 def get(prompt, default=None):
@@ -12,20 +15,24 @@ def get(prompt, default=None):
             return default
 
 
-def cookies(inputs=[]):
+def setting(inputs=[], sec="", key=""):
     if inputs == []:
         try:
-            with open(os.path.join(".log", "cookies"), "r", encoding="utf-8") as f:
-                return f.readlines()[0]
+            c = conf.load(sec, key)[0]
+            if c:
+                return c.replace("_", r"%")
+            else:
+                return False
         except:
             return False
     else:
         if len(inputs) < 3:
             print("[ERR]:\t请按照如下进行输入\n>c PHPSESSID=*****; userhash=*****")
         else:
-            with open(os.path.join(".log", "cookies"), "w", encoding="utf-8") as f:
-                f.write(f"{inputs[1]} {inputs[2]}")
-            return f"{inputs[1]} {inputs[2]}"
+            c = f"{inputs[1]} {inputs[2]}".replace(r"%", "_")
+            conf.add(sec, key, c)
+            conf.save()
+            return c
 
 
 def cache(cache={}):
@@ -98,14 +105,14 @@ print(msg)
 
 def main():
     try:
-        cookie = cookies()
+        cookie = setting(sec="cookie", key="cookie")
         inputs = re.split('\\s+', get('>').strip())
         while True:
             if inputs[0].startswith('q'):
                 import sys
                 sys.exit()
             elif inputs[0].startswith('c'):
-                cookies(inputs)
+                setting(inputs, sec="cookie", key="cookie")
             elif inputs[0].startswith('d'):
                 if cookie:
                     if len(inputs) != 2:

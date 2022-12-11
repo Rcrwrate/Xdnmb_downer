@@ -3,6 +3,9 @@ import os
 import sys
 from Xdnmb import Xdnmb, XdnmbException
 from Epub import Epub, TXT
+from Lib.ini import CONF
+
+conf = CONF("Xdnmb")
 
 parser = argparse.ArgumentParser(
     prog="Xdnmb Downloader",
@@ -25,11 +28,14 @@ print(args)
 
 
 def main(args):
-    def cookies(inputs=False):
+    def setting(inputs=False, sec="", key=""):
         if inputs == False:
             try:
-                with open(os.path.join(".log", "cookies"), "r", encoding="utf-8") as f:
-                    return f.readlines()[0]
+                c = conf.load(sec, key)[0]
+                if c:
+                    return c.replace("_", r"%")
+                else:
+                    return False
             except:
                 return False
         else:
@@ -38,9 +44,10 @@ def main(args):
                 print("[ERR]:\t请按照如下进行输入\n\t-c \"PHPSESSID=***** userhash=*****\"")
                 sys.exit(-1)
             else:
-                with open(os.path.join(".log", "cookies"), "w", encoding="utf-8") as f:
-                    f.write(f"{inputs[0]} {inputs[1]}")
-                return f"{inputs[0]} {inputs[1]}"
+                c = f"{inputs[0]} {inputs[1]}".replace(r"%", "_")
+                conf.add(sec, key, c)
+                conf.save()
+                return c
 
     def out(fin, x):
         print("[OUT]:正在导出")
@@ -69,7 +76,7 @@ def main(args):
             del t
             print("[OUT]:导出完成")
 
-    cookies = cookies(args.cookie)
+    cookies = setting(args.cookie, "cookie", "cookie")
     if cookies == False:
         print("[ERR]:请先设置Cookie或用-c传入")
         sys.exit(-1)
