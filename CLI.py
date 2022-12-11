@@ -31,22 +31,25 @@ def main(args):
     def setting(inputs=False, sec="", key=""):
         if inputs == False:
             try:
-                c = conf.load(sec, key)[0]
-                if c:
-                    return c.replace("_", r"%")
-                else:
-                    return False
+                return conf.load(sec, key)[0]
             except:
                 return False
         else:
+            conf.add(sec, key, inputs)
+            conf.save()
+            return inputs
+
+
+    def Cookie(inputs=False):
+        if inputs == False:
+            return setting(sec="cookie", key="cookie").replace("_",r"%")
+        else:
             inputs = inputs.split(" ")
-            if len(inputs) != 2:
+            if len(inputs) < 2:
                 print("[ERR]:\t请按照如下进行输入\n\t-c \"PHPSESSID=***** userhash=*****\"")
-                sys.exit(-1)
             else:
-                c = f"{inputs[0]} {inputs[1]}".replace(r"%", "_")
-                conf.add(sec, key, c)
-                conf.save()
+                c = f"{inputs[0]} {inputs[1]}"
+                setting(sec="cookie", key="cookie", inputs=c.replace(r"%", "_"))
                 return c
 
     def out(fin, x):
@@ -76,9 +79,9 @@ def main(args):
             del t
             print("[OUT]:导出完成")
 
-    cookies = setting(args.cookie, "cookie", "cookie")
+    cookies = Cookie(args.cookie)
     if cookies == False:
-        print("[ERR]:请先设置Cookie或用-c传入")
+        print("[ERR]:请先设置Cookie或用-c传入,记得用冒号包裹")
         sys.exit(-1)
     if args.download == False:
         print("[ERR]:虚空下载不可取")

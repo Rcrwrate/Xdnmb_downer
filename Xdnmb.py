@@ -15,15 +15,30 @@ class Xdnmb():
 
     def po(self, id, page):
         url = f"https://api.nmb.best/Api/po/id/{id}/page/{page}"
-        r = self.s.get(url)
-        self.success(r.json())
-        return self.remove_tips(r.json())
+        r = self.s.get(url).json()
+        self.success(r)
+        return self.remove_tips(r)
 
     def defalut(self, id, page):
         url = f"https://api.nmb.best/Api/thread/id/{id}/page/{page}"
-        r = self.s.get(url)
-        self.success(r.json())
-        return self.remove_tips(r.json())
+        r = self.s.get(url).json()
+        self.success(r)
+        return self.remove_tips(r)
+
+    def subscribe(self, uuid):
+        def single(page):
+            url = f"https://api.nmb.best/Api/feed/uuid/{uuid}/page/{page}"
+            r = self.s.get(url).json()
+            self.success(r)
+            return r
+        fin = []
+        i = 1
+        t = single(i)
+        while t != []:
+            fin.append(t)
+            i += 1
+            t = single(i)
+        return fin
 
     # def get_all(self, id):
     #     try:
@@ -41,9 +56,9 @@ class Xdnmb():
 
     def get_by_id(self, id):
         url = f"https://api.nmb.best/Api/ref/id/{id}"
-        r = self.s.get(url)
-        self.success(r.json())
-        return r.json()
+        r = self.s.get(url).json()
+        self.success(r)
+        return r
 
     def get_all(self, id, handle, p=1, fin=[]):
         try:

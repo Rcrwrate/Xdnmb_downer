@@ -15,23 +15,27 @@ def get(prompt, default=None):
             return default
 
 
-def setting(inputs=[], sec="", key=""):
-    if inputs == []:
+def setting(inputs=False, sec="", key=""):
+    if inputs == False:
         try:
-            c = conf.load(sec, key)[0]
-            if c:
-                return c.replace("_", r"%")
-            else:
-                return False
+            return conf.load(sec, key)[0]
         except:
             return False
+    else:
+        conf.add(sec, key, inputs)
+        conf.save()
+        return inputs
+
+
+def Cookie(inputs=[]):
+    if inputs == []:
+        return setting(sec="cookie", key="cookie").replace("_",r"%")
     else:
         if len(inputs) < 3:
             print("[ERR]:\t请按照如下进行输入\n>c PHPSESSID=*****; userhash=*****")
         else:
-            c = f"{inputs[1]} {inputs[2]}".replace(r"%", "_")
-            conf.add(sec, key, c)
-            conf.save()
+            c = f"{inputs[1]} {inputs[2]}"
+            setting(sec="cookie", key="cookie", inputs=c.replace(r"%", "_"))
             return c
 
 
@@ -88,6 +92,11 @@ def analysis(fin: dict):
                 del fin["Replies"][i]
         i += 1
     print("[ANALYSIS]:\t优化完成")
+    print(
+        f'''[TIPS]:当前标题为"{fin["title"]}",是否需要修改,如需修改请直接键入修改后的标题,不需请按回车''')
+    inputs = re.split('\\s+', input('>').strip())[0]
+    if inputs != "":
+        fin["title"] = inputs
     return fin
 
 
@@ -105,14 +114,15 @@ print(msg)
 
 def main():
     try:
-        cookie = setting(sec="cookie", key="cookie")
+        cookie = Cookie()
+        print(cookie)
         inputs = re.split('\\s+', get('>').strip())
         while True:
             if inputs[0].startswith('q'):
                 import sys
                 sys.exit()
             elif inputs[0].startswith('c'):
-                setting(inputs, sec="cookie", key="cookie")
+                Cookie(inputs)
             elif inputs[0].startswith('d'):
                 if cookie:
                     if len(inputs) != 2:
@@ -132,11 +142,6 @@ def main():
                 c = cache()
                 if c:
                     fin = analysis(c)
-                    print(
-                        f'''[TIPS]:当前标题为"{fin["title"]}",是否需要修改,如需修改请直接键入修改后的标题,不需请按回车''')
-                    inputs = re.split('\\s+', input('>').strip())[0]
-                    if inputs != "":
-                        fin["title"] = inputs
                     x = Xdnmb("")
                     out(fin, x)
             elif inputs[0].startswith('i'):
@@ -152,14 +157,18 @@ def main():
                             fin = x.err
                         cache(fin)
                         fin = analysis(fin)
-                        print(
-                            f'''[TIPS]:当前标题为"{fin["title"]}",是否需要修改,如需修改请直接键入修改后的标题,不需请按回车''')
-                        inputs = re.split('\\s+', input('>').strip())[0]
-                        if inputs != "":
-                            fin["title"] = inputs
                         out(fin, x)
                 else:
                     print("[ERR]:\t请先设置cookie")
+            elif inputs[0].startswith('s'):
+                if len(inputs) == 2:
+                    uuid = inputs[1]
+                else:
+                    uuid = setting(sec="subscribe", key="uuid")
+                if uuid == False:
+                    raise XdnmbException("虚空订阅?")
+                setting(inputs=uuid, sec="subscribe", key="uuid")
+
             else:
                 print(msg)
             inputs = re.split('\\s+', get('>').strip())
