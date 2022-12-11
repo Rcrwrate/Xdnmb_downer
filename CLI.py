@@ -42,7 +42,10 @@ def main(args):
 
     def Cookie(inputs=False):
         if inputs == False:
-            return setting(sec="cookie", key="cookie").replace("_",r"%")
+            c = setting(sec="cookie", key="cookie")
+            if c:
+                return c.replace("_",r"%")
+            return False
         else:
             inputs = inputs.split(" ")
             if len(inputs) < 2:

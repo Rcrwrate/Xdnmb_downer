@@ -29,7 +29,10 @@ def setting(inputs=False, sec="", key=""):
 
 def Cookie(inputs=[]):
     if inputs == []:
-        return setting(sec="cookie", key="cookie").replace("_",r"%")
+        c = setting(sec="cookie", key="cookie")
+        if c:
+            return c.replace("_",r"%")
+        return False
     else:
         if len(inputs) < 3:
             print("[ERR]:\t请按照如下进行输入\n>c PHPSESSID=*****; userhash=*****")
