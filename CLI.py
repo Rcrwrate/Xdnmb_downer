@@ -24,7 +24,7 @@ parser.add_argument("-o", "--output", type=str, nargs="?",
                     help='输出选择,可选项:epub,txt,默认全部', default=["epub", "txt"])
 args = parser.parse_args()
 
-print(args)
+# print(args)
 
 
 def main(args):
@@ -40,7 +40,7 @@ def main(args):
                 return False
         else:
             inputs = inputs.split(" ")
-            if len(inputs) < 3:
+            if len(inputs) != 2:
                 print("[ERR]:\t请按照如下进行输入\n\t-c \"PHPSESSID=***** userhash=*****\"")
                 sys.exit(-1)
             else:
