@@ -34,10 +34,15 @@ class Xdnmb():
         fin = []
         i = 1
         t = single(i)
+        c = self.cache("subscribe")
+        if c:
+            if c[0]["id"] == t[0]["id"]:
+                return c
         while t != []:
-            fin.append(t)
+            fin += t
             i += 1
             t = single(i)
+        self.cache("subscribe", fin)
         return fin
 
     # def get_all(self, id):

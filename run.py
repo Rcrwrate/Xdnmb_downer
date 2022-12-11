@@ -115,7 +115,6 @@ print(msg)
 def main():
     try:
         cookie = Cookie()
-        print(cookie)
         inputs = re.split('\\s+', get('>').strip())
         while True:
             if inputs[0].startswith('q'):
@@ -163,12 +162,14 @@ def main():
             elif inputs[0].startswith('s'):
                 if len(inputs) == 2:
                     uuid = inputs[1]
+                    setting(inputs=uuid, sec="subscribe", key="uuid")
                 else:
                     uuid = setting(sec="subscribe", key="uuid")
                 if uuid == False:
                     raise XdnmbException("虚空订阅?")
-                setting(inputs=uuid, sec="subscribe", key="uuid")
-
+                x = Xdnmb(cookie)
+                l = x.subscribe(uuid)
+                print(f"订阅总数共{len(l)}个")
             else:
                 print(msg)
             inputs = re.split('\\s+', get('>').strip())
