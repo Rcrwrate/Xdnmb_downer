@@ -1,10 +1,28 @@
 import os
+import zipfile
 from Lib.Network import Network
 
 
 def mkdir(path):
     if os.path.exists(path) != True:
         os.mkdir(path)
+
+
+def ZIP_single(root_path, dir_path):
+    '''
+    root_path:文件夹根目录
+    dir_path:文件夹内文件夹路径
+    '''
+    # 获取子目录的名称
+    dir_name = os.path.basename(dir_path)
+    zip_file_path = os.path.join(root_path, dir_name + ".epub")
+    with zipfile.ZipFile(zip_file_path, "w", compression=zipfile.ZIP_STORED) as zipf:
+        # 递归地添加子目录中的文件和文件夹到归档文件
+        for root, dirs, files in os.walk(dir_path):
+            for file in files:
+                file_path = os.path.join(root, file)
+                arc_name = os.path.relpath(file_path, dir_path)
+                zipf.write(file_path, arcname=arc_name)
 
 
 class Epub():
@@ -170,6 +188,7 @@ class Epub():
                     '''<itemref idref="{}" />\n'''.format(i["url"].replace("Text/", "")))
             f.write(
                 '''</spine>\n<guide>\n<reference href="Text/cover.xhtml" title="书籍封面" type="cover" />\n</guide>\n</package>''')
+        ZIP_single(".tmp", os.path.join(".tmp", self.name))
 
 class TXT():
     def __init__(self,name) -> None:
